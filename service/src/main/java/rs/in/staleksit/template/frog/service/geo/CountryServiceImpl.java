@@ -1,17 +1,18 @@
 package rs.in.staleksit.template.frog.service.geo;
 
+import lombok.RequiredArgsConstructor;
 import rs.in.staleksit.template.frog.domain.model.Country;
 
-import java.util.HashSet;
 import java.util.Set;
 
+@RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService {
+
+    private final CountryPersistencePort countryPersistencePort;
 
     @Override
     public Set<Country> findAllCountries() {
-        Set<Country> countries = new HashSet<>();
-        countries.add(Country.create("admin@test.com", "Srbija", "RS", "SRB"));
-        return countries;
+        return countryPersistencePort.findAll();
     }
 
 }

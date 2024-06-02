@@ -47,6 +47,23 @@ public class Country {
         return country;
     }
 
+    public static Country initCreate(final Long id,
+                                     final String createdBy,
+                                     final String name,
+                                     final String alpha2,
+                                     final String alpha3) {
+        Country country = new Country();
+        country.id = id;
+        country.createdBy = createdBy;
+        country.createdDate = Instant.now();
+        country.lastModifiedBy = createdBy;
+        country.lastModifiedDate = Instant.now();
+        country.name = name;
+        country.alpha2 = alpha2;
+        country.alpha3 = alpha3;
+        return country;
+    }
+
     public void update(final Long id,
                        final String lastModifiedBy,
                        final String name,
