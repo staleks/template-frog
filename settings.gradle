@@ -1,1 +1,3 @@
 rootProject.name = 'template-frog'
+
+include 'domain'

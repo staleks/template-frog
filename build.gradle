@@ -1,41 +1,77 @@
 plugins {
-	id 'java'
 	id 'org.springframework.boot' version '3.3.0'
 	id 'io.spring.dependency-management' version '1.1.5'
 }
 
-group = 'rs.in.staleksit.template.frog'
-version = '0.0.1-SNAPSHOT'
-
-java {
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+allprojects {
+	group 'rs.in.staleksit.template.frog'
+	version = '0.0.1-SNAPSHOT'
 }
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'io.spring.dependency-management'
+
+	java {
+		sourceCompatibility = JavaVersion.VERSION_21
+		targetCompatibility = JavaVersion.VERSION_21
 	}
-}
 
-repositories {
-	mavenCentral()
-}
+	compileJava.options.encoding = "UTF-8"
+	compileTestJava.options.encoding = "UTF-8"
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
+	repositories {
+		mavenCentral()
+	}
 
-tasks.named('test') {
-	useJUnitPlatform()
+	dependencies {
+		// import BOM
+		implementation platform("org.springframework.boot:spring-boot-dependencies:3.3.0")
+		implementation platform("org.springframework.boot:spring-boot-starter-parent:3.3.0")
+
+		// lombok
+		compileOnly "org.projectlombok:lombok:1.18.32"
+		annotationProcessor "org.projectlombok:lombok:1.18.32"
+
+		implementation 'org.springframework:spring-context'
+		implementation 'io.micrometer:micrometer-registry-prometheus'
+
+		testImplementation("org.projectlombok:lombok:1.18.32")
+		testAnnotationProcessor("org.projectlombok:lombok:1.18.32")
+
+		// testing
+		testImplementation 'org.springframework:spring-test'
+	}
+
+	test {
+		useJUnitPlatform()
+
+		testLogging {
+			events "passed", "skipped", "failed"
+		}
+
+		afterSuite { desc, result ->
+			if (!desc.parent) {
+				println "\nTest result: ${result.resultType}"
+				println "Test summary: ${result.testCount} tests, " +
+						"${result.successfulTestCount} succeeded, " +
+						"${result.failedTestCount} failed, " +
+						"${result.skippedTestCount} skipped"
+			}
+		}
+
+	}
+
+	tasks.withType(Javadoc).all { enabled = false }
+
 }
 
 wrapper {
     gradleVersion = '8.7'
 }
 
+task build {
+	subprojects.each {
+		dependsOn "${it.path}:build"
+	}
+}
