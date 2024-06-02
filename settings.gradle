@@ -1,3 +1,8 @@
 rootProject.name = 'template-frog'
 
 include 'domain'
+include 'testdata'
+include 'service'
+include 'adapters:persistence'
+include 'adapters:web'
+include 'app'

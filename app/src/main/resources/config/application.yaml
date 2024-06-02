@@ -1,0 +1,11 @@
+server:
+  port: 8090
+  undertow:
+    accesslog:
+      enabled: true
+      prefix: template_frog_access.
+      dir: log/${spring.application.name}/access
+      pattern: '%h %l %u %t "%r" %s %b %{i,X-Request-Id} %{i,X-Forwarded-For} %D'
+
+logging:
+  config: classpath:logback-spring.xml

@@ -1,0 +1,27 @@
+plugins {
+    id 'java-library'
+}
+
+configurations {
+    implementation.exclude module: 'spring-boot-starter-tomcat'
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':service')
+
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:2023.0.2")
+
+    // spring
+    implementation 'org.springframework:spring-context'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    implementation 'io.undertow:undertow-core:2.3.13.Final'
+    implementation 'io.undertow:undertow-core:2.3.13.Final'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-consul-all'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+}

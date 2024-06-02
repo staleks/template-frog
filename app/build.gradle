@@ -1,0 +1,29 @@
+apply plugin: 'org.springframework.boot'
+
+configurations {
+    implementation.exclude module: 'spring-boot-starter-tomcat'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven { url 'https://repo.spring.io/libs-milestone' }
+}
+
+dependencies {
+    implementation project(':service')
+    implementation project(':adapters:persistence')
+    implementation project(':adapters:web')
+
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:2023.0.2")
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-consul-all'
+}
+
+test{
+    dependsOn ':domain:test'
+    dependsOn ':service:test'
+    dependsOn ':adapters:persistence:test'
+    dependsOn ':adapters:web:test'
+}

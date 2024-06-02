@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: template-frog
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      host: ${CONSUL_HOST}
+      port: 8500
+      config:
+        enabled: true
+      discovery:
+        instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+        health-check-timeout: 30s
+        health-check-critical-timeout: 4m
+        query-passing: true
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  cloud:
+    consul:
+      host: localhost
+      discovery:
+        prefer-ip-address: true
+
